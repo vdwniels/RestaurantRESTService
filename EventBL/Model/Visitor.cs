@@ -14,13 +14,17 @@ namespace EventBL.Model
             BirthDay = birthDay;
         }
 
-        public Visitor(int id, string name, DateTime birthDay) : this( name,birthDay)
+        public Visitor(string name, DateTime birthDay,int id) : this( name,birthDay)
         {
             SetId(id);           
         }
 
-        public int Id { get; private set; }
-        public string Name { get; private set; }
+        public Visitor()
+        {
+        }
+
+        public int Id { get;  set; }
+        public string Name { get;  set; }
         public DateTime BirthDay { get;  set; }
         public bool IsDifferent(Visitor visitor)
         {
