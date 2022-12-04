@@ -7,26 +7,22 @@ using System.Threading.Tasks;
 
 namespace RestaurantBL.Model
 {
-    public class User
+    public class User : ContactDetails
     {
         public User(int customerNumber, string name, string email, string phoneNumber, Location location) : this (name,email,phoneNumber,location)
         {
-            CustomerNumber = customerNumber;
+            SetCustomerNumber (customerNumber);
         }
 
-        public User(string name, string email, string phoneNumber, Location location)
+        public User(string name, string email, string phoneNumber, Location location) : base (email,phoneNumber)
         {
-            Name = name;
-            Email = email;
-            PhoneNumber = phoneNumber;
-            Location = location;
+            SetName (name);
+            SetLocation (location);
         }
 
 
         public int CustomerNumber { get; set; }
         public string Name { get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
         public Location Location { get; set; }
 
         public void SetCustomerNumber (int customerNumber)
@@ -41,24 +37,16 @@ namespace RestaurantBL.Model
             Name = name.Trim();
         }
 
-        public void SetEmail (string email)
-        {
-            email = email.Trim().ToLower();
-            if (!Check.IsCorrectEmailSyntax(email)) throw new UserException("User - SetEmail - Email incorrect (syntax)");
-            Email = email;
-        }
-
-        public void SetPhoneNumber (string phonenumber)
-        {
-            phonenumber = phonenumber.Trim();
-            if (!Check.IsCorrectPhoneNumberSyntax(phonenumber)) throw new UserException("User - SetPhoneNumber - Phonenumber incorrect (syntax)");
-            PhoneNumber = phonenumber;
-        }
         
         public void SetLocation (Location location)
         {
-            if (Location == null) throw new UserException("User - SetLocation - No location entry");
+            if (location == null) throw new UserException("User - SetLocation - No location entry");
             Location = location;
+        }
+
+        public override string ToString()
+        {
+            return $"User: {CustomerNumber} - {Name} - {Email} - {PhoneNumber} - {Location.PostalCode} - {Location.Town} - {Location.Street} - {Location.Number}";
         }
     }
 }
