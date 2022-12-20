@@ -18,9 +18,21 @@ namespace RestaurantBL.Model
             SetCuisine(cuisine);
         }
 
+        public Restaurant(int restaurantId, string name, Location location, string cuisine, string email, string phonenumber) : this (name, location, cuisine,  email, phonenumber)
+        {
+            SetRestaurantId(restaurantId);
+        }
+
+        public int RestaurantId { get; set; }
         public string Name { get; set; }
         public Location Location { get; set; }
         public string Cuisine { get; set; }
+
+        public void SetRestaurantId (int id)
+        {
+            if (id < 1) throw new RestaurantException("Restaurant - SetRestaurantId - id is less than 1");
+            RestaurantId = id;
+        }
 
         public void SetName (string name)
         {

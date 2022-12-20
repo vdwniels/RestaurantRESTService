@@ -4,6 +4,7 @@ using RestaurantBL.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -60,6 +61,23 @@ namespace RestaurantBL.Services
             }
         }
 
-        public 
+        public Restaurant AddRestaurant (Restaurant restaurant)
+        {
+            try
+            {
+                if (restaurant == null) throw new RestaurantServiceException("RestaurantService - AddRestaurant - no restaurant entry");
+                if (repo.RestaurantExists(restaurant.PhoneNumber,restaurant.Email)) throw new RestaurantServiceException("RestaurantService - AddRestaurant - Restaurant with this phonenumber and/or email already exists");
+                Restaurant restaurantWithId = repo.AddRestaurant(restaurant);
+                return restaurantWithId;
+            }
+            catch (RestaurantServiceException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new RestaurantServiceException("AddRestaurant", ex);
+            }
+        }
     }
 }

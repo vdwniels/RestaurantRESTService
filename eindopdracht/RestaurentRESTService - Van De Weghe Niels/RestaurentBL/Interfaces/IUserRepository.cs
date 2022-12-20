@@ -9,7 +9,7 @@ namespace RestaurantBL.Interfaces
 {
     public interface IUserRepository
     {
-        void AddUser(User user);
+        User AddUser(User user);
         User GetUser(int customerNumber);
         void UnsubscribeUser(int customerNumber);
         void UpdateUser(User user);

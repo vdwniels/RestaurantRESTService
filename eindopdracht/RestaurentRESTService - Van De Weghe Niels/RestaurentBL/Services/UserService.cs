@@ -39,9 +39,9 @@ namespace RestaurantBL.Services
             try
             {
                 if (user == null) throw new UserServiceException("UserService - Adduser - No user entry");
-                if (repo.UserExists(user.PhoneNumber, user.Email)) throw new UserServiceException("UserService - AddUseer - User with this phonenumber and/or email already exists");
-                repo.AddUser(user);
-                return user;
+                if (repo.UserExists(user.PhoneNumber, user.Email)) throw new UserServiceException("UserService - AddUser - User with this phonenumber and/or email already exists");
+                User userWithId = repo.AddUser(user);
+                return userWithId;
             }
             catch (UserServiceException)
             {
