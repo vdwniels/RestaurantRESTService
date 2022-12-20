@@ -9,6 +9,8 @@ namespace RestaurantBL.Model
 {
     public class Restaurant : ContactDetails
     {
+        public Dictionary<Table,int> _tables = new Dictionary<Table,int>();
+
         public Restaurant(string name, Location location, string cuisine, string email, string phonenumber) : base (email,phonenumber)
         {
             Name = name;
@@ -19,7 +21,6 @@ namespace RestaurantBL.Model
         public string Name { get; set; }
         public Location Location { get; set; }
         public string Cuisine { get; set; }
-        public List<Table> Tables { get; set; }
 
         public void SetName (string name)
         {
@@ -40,14 +41,29 @@ namespace RestaurantBL.Model
             Cuisine = char.ToUpper(cuisine[0]) + cuisine.Substring(1).ToLower();
         }
 
+        public IReadOnlyDictionary<Table,int> GetTables()
+        {
+            return _tables;
+        }
+
         public void AddTable (Table table)
         {
             if (table == null) throw new RestaurantException("Restaurant - AddTable - No table entry");
-            foreach (Table t in Tables)
+            foreach (Table t in _tables.Keys)
             {
                 if (t.TableNumber == table.TableNumber) throw new RestaurantException("Restaurant - AddTable - Table already exists");
             }
-            Tables.Add(table);
+            _tables.Add(table,table.TableNumber);
+        }
+
+        public void DeleteTable(Table table)
+        {
+            if (table == null) throw new RestaurantException("Restaurant - DeleteTable - No table entry");
+            if (_tables.Keys.Contains(table))
+            {
+                _tables.Remove(table);
+            }
+            else throw new RestaurantException("Restaurant - DeleteTable - Table doesn't exist");
         }
     }
 }

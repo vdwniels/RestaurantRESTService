@@ -29,5 +29,17 @@ namespace RestaurantBL.Model
             if (seats < 1) throw new TableException("Table - SetSeats - Must have at least 1 seat");
             Seats = seats;
         }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Table table &&
+                   TableNumber == table.TableNumber &&
+                   Seats == table.Seats;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(TableNumber, Seats);
+        }
     }
 }
