@@ -13,9 +13,9 @@ namespace RestaurantBL.Model
 
         public Restaurant(string name, Location location, string cuisine, string email, string phonenumber) : base (email,phonenumber)
         {
-            Name = name;
-            Location = location;
-            Cuisine = cuisine;
+            SetName(name);
+            SetLocation(location);
+            SetCuisine(cuisine);
         }
 
         public string Name { get; set; }

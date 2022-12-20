@@ -12,21 +12,16 @@ namespace RestaurantBL.Model
     {
         public Reservation(Restaurant restaurantInfo, User customer, int seats, int tablenumber, DateTime dateAndHour)
         {
-            RestaurantInfo = restaurantInfo;
-            Customer = customer;
-            Tablenumber = tablenumber;
-            Seats = seats;
-            DateAndHour = dateAndHour;
+            SetRestaurantInfo(restaurantInfo);
+            SetCustomer(customer);
+            SetTableNumber(tablenumber);
+            SetSeats(seats);
+            SetDateAndHour(dateAndHour);
         }
 
-        public Reservation(int reservationNumber, Restaurant restaurantInfo, User customer, int seats, int tablenumber, DateTime dateAndHour)
+        public Reservation(int reservationNumber, Restaurant restaurantInfo, User customer, int seats, int tablenumber, DateTime dateAndHour) : this (restaurantInfo, customer, seats, tablenumber, dateAndHour)
         {
-            ReservationNumber = reservationNumber;
-            RestaurantInfo = restaurantInfo;
-            Customer = customer;
-            Tablenumber = tablenumber;
-            Seats = seats;
-            DateAndHour = dateAndHour;
+            SetReservationNumber(reservationNumber);
         }
 
         public int ReservationNumber { get; set; }
@@ -72,7 +67,7 @@ namespace RestaurantBL.Model
         {
             if (dateAndHour == null) new ReservationException("Reservation - SetDateAndHour - no DateAndHour entry");
             if (dateAndHour > DateTime.Now) new ReservationException("Reservation - SetDateAndHour - Can't make reservation in the past");
-            DateAndHour = dateAndHour
+            DateAndHour = dateAndHour;
         }
     }
 }

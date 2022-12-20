@@ -11,8 +11,8 @@ namespace RestaurantBL.Model
     {
         public Table(int tableNumber, int seats)
         {
-            TableNumber = tableNumber;
-            Seats = seats;
+            SetTableNumber(tableNumber);
+            SetSeats(seats);
         }
 
         public int TableNumber { get;set; }

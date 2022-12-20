@@ -48,5 +48,32 @@ namespace RestaurantBL.Model
         {
             return $"User: {CustomerNumber} - {Name} - {Email} - {PhoneNumber} - {Location.PostalCode} - {Location.Town} - {Location.Street} - {Location.Number}";
         }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is User user &&
+                   Email == user.Email &&
+                   PhoneNumber == user.PhoneNumber &&
+                   CustomerNumber == user.CustomerNumber &&
+                   Name == user.Name &&
+                   EqualityComparer<Location>.Default.Equals(Location, user.Location);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Email, PhoneNumber, CustomerNumber, Name, Location);
+        }
+
+        public static bool operator==( User u1, User u2)
+        {
+            if ((object)u1 == null)
+                return (object)u2 == null;
+            return u1.Equals(u2);
+        }
+        public static bool operator !=(User u1, User u2)
+        {
+            return !(u1 == u2);
+        }
+
     }
 }
