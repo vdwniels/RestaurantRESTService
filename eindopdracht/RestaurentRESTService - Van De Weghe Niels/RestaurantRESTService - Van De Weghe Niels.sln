@@ -3,17 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32811.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantRESTServiceUser", "RestaurantRESTService\RestaurantRESTServiceUser.csproj", "{8049A78B-9D1D-46A3-84B7-BF9E0021616A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantRESTServiceUser", "RestaurantRESTService\RestaurantRESTServiceUser.csproj", "{8049A78B-9D1D-46A3-84B7-BF9E0021616A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantBL", "RestaurentBL\RestaurantBL.csproj", "{13580471-1635-4757-8BF1-E775AF3803ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantBL", "RestaurentBL\RestaurantBL.csproj", "{13580471-1635-4757-8BF1-E775AF3803ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantDL", "RestaurantDL\RestaurantDL.csproj", "{B9E193E9-A27F-4B4F-9547-01AC46BBD499}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantDL", "RestaurantDL\RestaurantDL.csproj", "{B9E193E9-A27F-4B4F-9547-01AC46BBD499}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestautantRESTServiceAdmin", "RestautantRESTServiceAdmin\RestautantRESTServiceAdmin.csproj", "{7D8E47DC-D602-49FC-B5DD-922AE8F87803}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestautantRESTServiceAdmin", "RestautantRESTServiceAdmin\RestautantRESTServiceAdmin.csproj", "{7D8E47DC-D602-49FC-B5DD-922AE8F87803}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testapps", "Testapps", "{DB2C1226-E7F9-44EE-A404-AC76DAAA67F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{FBF371B2-7D4D-4D6D-B3F1-73F4D0AFAA58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{FBF371B2-7D4D-4D6D-B3F1-73F4D0AFAA58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp2", "ConsoleApp2\ConsoleApp2.csproj", "{B023F1CE-C763-45C5-8914-153D0FA15266}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,12 +43,17 @@ Global
 		{FBF371B2-7D4D-4D6D-B3F1-73F4D0AFAA58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBF371B2-7D4D-4D6D-B3F1-73F4D0AFAA58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBF371B2-7D4D-4D6D-B3F1-73F4D0AFAA58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B023F1CE-C763-45C5-8914-153D0FA15266}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B023F1CE-C763-45C5-8914-153D0FA15266}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B023F1CE-C763-45C5-8914-153D0FA15266}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B023F1CE-C763-45C5-8914-153D0FA15266}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FBF371B2-7D4D-4D6D-B3F1-73F4D0AFAA58} = {DB2C1226-E7F9-44EE-A404-AC76DAAA67F1}
+		{B023F1CE-C763-45C5-8914-153D0FA15266} = {DB2C1226-E7F9-44EE-A404-AC76DAAA67F1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {31A037B3-D2FE-42EA-9B60-A06D10726FA7}

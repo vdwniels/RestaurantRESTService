@@ -44,7 +44,7 @@ namespace RestaurantBL.Services
                 List<Table> allTables = tableService.GetAllTablesOfRestaurant(restaurantId); 
                 List<Table> reservedTables = reservationRepo.SelectFreeTables(restaurantId, DateAndHour);
 
-
+                List<Table> FreeTables = allTables.Except(reservedTables).ToList();
             }
             catch (ReservationServiceException)
             {
