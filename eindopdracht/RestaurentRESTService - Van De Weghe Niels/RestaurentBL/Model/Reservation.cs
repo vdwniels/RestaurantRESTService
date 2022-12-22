@@ -10,18 +10,18 @@ namespace RestaurantBL.Model
 {
     public class Reservation
     {
-        public Reservation(Restaurant restaurantInfo, User customer, int seats, int tablenumber, DateTime dateAndHour)
+        public Reservation(Restaurant restaurantInfo, User customer, int seats, DateTime dateAndHour)
         {
             SetRestaurantInfo(restaurantInfo);
             SetCustomer(customer);
-            SetTableNumber(tablenumber);
             SetSeats(seats);
             SetDateAndHour(dateAndHour);
         }
 
-        public Reservation(int reservationNumber, Restaurant restaurantInfo, User customer, int seats, int tablenumber, DateTime dateAndHour) : this (restaurantInfo, customer, seats, tablenumber, dateAndHour)
+        public Reservation(int reservationNumber,int tablenumber, Restaurant restaurantInfo, User customer, int seats, DateTime dateAndHour) : this (restaurantInfo, customer, seats, dateAndHour)
         {
             SetReservationNumber(reservationNumber);
+            SetTableNumber(tablenumber);
         }
 
         public int ReservationNumber { get; set; }
@@ -65,8 +65,9 @@ namespace RestaurantBL.Model
 
         public void SetDateAndHour(DateTime dateAndHour)
         {
-            if (dateAndHour == null) new ReservationException("Reservation - SetDateAndHour - no DateAndHour entry");
-            if (dateAndHour > DateTime.Now) new ReservationException("Reservation - SetDateAndHour - Can't make reservation in the past");
+            if (dateAndHour == null) throw new ReservationException("Reservation - SetDateAndHour - no DateAndHour entry");
+            if (dateAndHour > DateTime.Now) throw new ReservationException("Reservation - SetDateAndHour - Can't make reservation in the past");
+            if (dateAndHour.Minute != 30 && dateAndHour.Minute != 00 ) throw new ReservationException("Reservation - SetDateAndHour - Can only make a reservation every other half hour (e.g. 20:00 and 20:30)");
             DateAndHour = dateAndHour;
         }
     }

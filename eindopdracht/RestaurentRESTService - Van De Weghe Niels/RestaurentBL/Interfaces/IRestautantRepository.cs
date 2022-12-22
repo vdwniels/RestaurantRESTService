@@ -10,8 +10,12 @@ namespace RestaurantBL.Interfaces
     public interface IRestautantRepository
     {
         Restaurant AddRestaurant(Restaurant restaurant);
+        void DeleteRestaurant(int restaurantId);
+        Restaurant GetRestaurant(int restaurantId);
         IReadOnlyList<Restaurant> GetRestaurantsWithFreeTables(DateTime date, int seats);
         bool RestaurantExists(string phoneNumber, string email);
+        bool RestaurantExists(int restaurantId);
         IReadOnlyList<Restaurant> SearchRestaurantOnLocationAndOrCuisine(int? postalcode, string? cuisine);
+        void UpdateRestaurant(Restaurant restaurant);
     }
 }

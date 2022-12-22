@@ -15,8 +15,20 @@ namespace RestaurantBL.Model
             SetSeats(seats);
         }
 
+        public Table(int tableId, int tableNumber, int seats) : this (tableNumber, seats)
+        {
+            SetTableId(tableId);
+        }
+
+        public int TableId { get; set; }
         public int TableNumber { get;set; }
         public int Seats { get;set; }
+
+        public void SetTableId(int id)
+        {
+            if (id < 1) throw new TableException("Table - SetTableId - No negative ID's");
+            TableId = id;
+        }
 
         public void SetTableNumber(int tablenr)
         {

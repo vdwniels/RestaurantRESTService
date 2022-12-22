@@ -60,7 +60,7 @@ namespace RestaurantBL.Services
                 if (user == null) throw new UserServiceException("UserService - Updateuser - No user entry");
                 if (!repo.UserExists(user.CustomerNumber)) throw new UserServiceException("UserService - Updateuser - User doesn't exist");
                 User currentUserData = repo.GetUser(user.CustomerNumber);
-                if (user == currentUserData) throw new UserServiceException("UserService - Updateuser - No different values");
+                if (user == currentUserData) throw new UserServiceException("UserService - Updateuser - No different values");// operator overload
                 repo.UpdateUser(user);
             }
             catch (UserServiceException)

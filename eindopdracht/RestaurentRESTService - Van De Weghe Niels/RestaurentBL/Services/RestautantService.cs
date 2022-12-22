@@ -40,7 +40,7 @@ namespace RestaurantBL.Services
             }
         }
 
-        public IReadOnlyList<Restaurant> GetRestaurantsWithFreeTables(DateTime date, int seats)
+        public IReadOnlyList<Restaurant> SearchRestaurantsWithFreeTables(DateTime date, int seats)
         {
             try
             {
@@ -77,6 +77,43 @@ namespace RestaurantBL.Services
             catch (Exception ex)
             {
                 throw new RestaurantServiceException("AddRestaurant", ex);
+            }
+        }
+
+        public void DeleteRestaurant (int restaurantId)
+        {
+            try
+            {
+                if (!repo.RestaurantExists(restaurantId)) throw new RestaurantServiceException("RestaurantService - DeleteRestaurant - restaurant doesn't exist");
+                repo.DeleteRestaurant(restaurantId);
+            }
+            catch (RestaurantServiceException)
+            {
+                throw;
+            }
+            catch(Exception ex)
+            {
+                throw new RestaurantServiceException("DeleteRestaurant", ex);
+            }
+        }
+
+        public void UpdateRestaurant(Restaurant restaurant)
+        {
+            try
+            {
+                if (restaurant == null) throw new RestaurantServiceException("RestaurantService - UpdateRestaurant - no restaurant data entry");
+                if (!repo.RestaurantExists(restaurant.RestaurantId)) throw new RestaurantServiceException("RestaurantService - UpdateRestaurant - restaurant doesn't exist");
+                Restaurant currentRestaurant = repo.GetRestaurant(restaurant.RestaurantId);
+                if (restaurant == currentRestaurant) throw new RestaurantServiceException("RestaurantService - UpdateRestaurant - no different values");// operator overload
+                repo.UpdateRestaurant(restaurant);
+            }
+            catch (RestaurantServiceException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new RestaurantServiceException("UpdateRestaurant", ex);
             }
         }
     }

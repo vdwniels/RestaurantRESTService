@@ -77,5 +77,33 @@ namespace RestaurantBL.Model
             }
             else throw new RestaurantException("Restaurant - DeleteTable - Table doesn't exist");
         }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Restaurant restaurant &&
+                   Email == restaurant.Email &&
+                   PhoneNumber == restaurant.PhoneNumber &&
+                   RestaurantId == restaurant.RestaurantId &&
+                   Name == restaurant.Name &&
+                   EqualityComparer<Location>.Default.Equals(Location, restaurant.Location) &&
+                   Cuisine == restaurant.Cuisine;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Email, PhoneNumber, RestaurantId, Name, Location, Cuisine);
+        }
+
+        public static bool operator ==(Restaurant r1, Restaurant r2)
+        {
+            if ((object)r1 == null)
+                return (object)r2 == null;
+            return r1.Equals(r2);
+        }
+        public static bool operator !=(Restaurant r1, Restaurant r2)
+        {
+            return !(r1 == r2);
+        }
+
     }
 }
