@@ -9,13 +9,14 @@ namespace RestaurantBL.Model
 {
     public class Table
     {
-        public Table(int tableNumber, int seats)
+        public Table(int tableNumber, int seats, int restaurantId)
         {
             SetTableNumber(tableNumber);
             SetSeats(seats);
+            SetRestaurantId(restaurantId);
         }
 
-        public Table(int tableId, int tableNumber, int seats) : this (tableNumber, seats)
+        public Table(int tableId, int tableNumber, int seats, int restaurantId) : this (tableNumber, seats, restaurantId)
         {
             SetTableId(tableId);
         }
@@ -23,6 +24,7 @@ namespace RestaurantBL.Model
         public int TableId { get; set; }
         public int TableNumber { get;set; }
         public int Seats { get;set; }
+        public int RestaurantId { get; set; }
 
         public void SetTableId(int id)
         {
@@ -42,16 +44,36 @@ namespace RestaurantBL.Model
             Seats = seats;
         }
 
+        public void SetRestaurantId(int restaurantId)
+        {
+            if (restaurantId < 1) throw new TableException("Table - SetRestaurantId - No negative ID's");
+            RestaurantId = restaurantId;
+        }
+
         public override bool Equals(object? obj)
         {
             return obj is Table table &&
+                   TableId == table.TableId &&
                    TableNumber == table.TableNumber &&
-                   Seats == table.Seats;
+                   Seats == table.Seats &&
+                   RestaurantId == table.RestaurantId;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(TableNumber, Seats);
+            return HashCode.Combine(TableId, TableNumber, Seats, RestaurantId);
         }
+
+        public static bool operator ==(Table t1, Table t2)
+        {
+            if ((object)t1 == null)
+                return (object)t2 == null;
+            return t1.Equals(t2);
+        }
+        public static bool operator !=(Table t1, Table t2)
+        {
+            return !(t1 == t2);
+        }
+
     }
 }

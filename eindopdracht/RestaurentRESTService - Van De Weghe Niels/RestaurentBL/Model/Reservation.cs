@@ -70,5 +70,33 @@ namespace RestaurantBL.Model
             if (dateAndHour.Minute != 30 && dateAndHour.Minute != 00 ) throw new ReservationException("Reservation - SetDateAndHour - Can only make a reservation every other half hour (e.g. 20:00 and 20:30)");
             DateAndHour = dateAndHour;
         }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Reservation reservation &&
+                   ReservationNumber == reservation.ReservationNumber &&
+                   EqualityComparer<Restaurant>.Default.Equals(RestaurantInfo, reservation.RestaurantInfo) &&
+                   EqualityComparer<User>.Default.Equals(Customer, reservation.Customer) &&
+                   Tablenumber == reservation.Tablenumber &&
+                   Seats == reservation.Seats &&
+                   DateAndHour == reservation.DateAndHour;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(ReservationNumber, RestaurantInfo, Customer, Tablenumber, Seats, DateAndHour);
+        }
+
+        public static bool operator ==(Reservation r1, Reservation r2)
+        {
+            if ((object)r1 == null)
+                return (object)r2 == null;
+            return r1.Equals(r2);
+        }
+        public static bool operator !=(Reservation r1, Reservation r2)
+        {
+            return !(r1 == r2);
+        }
+
     }
 }

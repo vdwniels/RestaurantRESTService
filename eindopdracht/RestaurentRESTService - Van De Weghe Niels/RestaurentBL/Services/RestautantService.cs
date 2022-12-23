@@ -85,6 +85,7 @@ namespace RestaurantBL.Services
             try
             {
                 if (!repo.RestaurantExists(restaurantId)) throw new RestaurantServiceException("RestaurantService - DeleteRestaurant - restaurant doesn't exist");
+                if (repo.HasTables(restaurantId)) throw new RestaurantServiceException("RestaurantService - DeleteRestaurant - restaurant still has tables");
                 repo.DeleteRestaurant(restaurantId);
             }
             catch (RestaurantServiceException)

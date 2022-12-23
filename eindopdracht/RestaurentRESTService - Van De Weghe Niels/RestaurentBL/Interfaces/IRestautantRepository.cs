@@ -13,6 +13,7 @@ namespace RestaurantBL.Interfaces
         void DeleteRestaurant(int restaurantId);
         Restaurant GetRestaurant(int restaurantId);
         IReadOnlyList<Restaurant> GetRestaurantsWithFreeTables(DateTime date, int seats);
+        bool HasTables(int restaurantId);
         bool RestaurantExists(string phoneNumber, string email);
         bool RestaurantExists(int restaurantId);
         IReadOnlyList<Restaurant> SearchRestaurantOnLocationAndOrCuisine(int? postalcode, string? cuisine);
