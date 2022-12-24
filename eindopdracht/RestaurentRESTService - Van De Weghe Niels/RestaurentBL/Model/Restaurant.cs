@@ -42,7 +42,7 @@ namespace RestaurantBL.Model
 
         public void SetLocation (Location location)
         {
-            if (Location == null) throw new RestaurantException("Restaurant - SetLocation - No location entry");
+            if (location == null) throw new RestaurantException("Restaurant - SetLocation - No location entry");
             Location = location;
         }
 
@@ -64,6 +64,7 @@ namespace RestaurantBL.Model
             foreach (Table t in _tables.Keys)
             {
                 if (t.TableNumber == table.TableNumber) throw new RestaurantException("Restaurant - AddTable - Table already exists");
+                if (table.RestaurantId != this.RestaurantId) throw new RestaurantException("Restaurant - AddTable - Table does not belong to this Restaurant");
             }
             _tables.Add(table,table.TableNumber);
         }
@@ -76,6 +77,11 @@ namespace RestaurantBL.Model
                 _tables.Remove(table);
             }
             else throw new RestaurantException("Restaurant - DeleteTable - Table doesn't exist");
+        }
+
+        public override string ToString()
+        {
+            return $"Restaurant {RestaurantId}: {Name}, established in {Location.Town}";
         }
 
         public override bool Equals(object? obj)

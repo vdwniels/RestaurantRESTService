@@ -80,7 +80,7 @@ namespace RestaurantBL.Services
             }
         }
 
-        public void DeleteRestaurant (int restaurantId)
+        public void DeleteRestaurant (int restaurantId) //TODO test when all tables are IsDeleted = 1
         {
             try
             {
@@ -105,7 +105,15 @@ namespace RestaurantBL.Services
                 if (restaurant == null) throw new RestaurantServiceException("RestaurantService - UpdateRestaurant - no restaurant data entry");
                 if (!repo.RestaurantExists(restaurant.RestaurantId)) throw new RestaurantServiceException("RestaurantService - UpdateRestaurant - restaurant doesn't exist");
                 Restaurant currentRestaurant = repo.GetRestaurant(restaurant.RestaurantId);
-                if (restaurant == currentRestaurant) throw new RestaurantServiceException("RestaurantService - UpdateRestaurant - no different values");// operator overload
+                #region test
+
+                foreach(Table t in currentRestaurant._tables.Keys)
+                {
+                    Console.WriteLine($"{currentRestaurant.Name} --- {t.TableNumber} - {t.Seats} - {t.RestaurantId}");
+                }
+
+                #endregion
+                if (restaurant == currentRestaurant || currentRestaurant == null) throw new RestaurantServiceException("RestaurantService - UpdateRestaurant - no different values");// operator overload
                 repo.UpdateRestaurant(restaurant);
             }
             catch (RestaurantServiceException)

@@ -23,8 +23,8 @@ string conn = @"Data Source=FRENK\SQLEXPRESS;Initial Catalog=RestaurantRESTdef;I
 
 
 // Test AddUser
-IUserRepository repo = new UserRepositoryADO(conn);
-UserService us = new UserService(repo);
+//IUserRepository repo = new UserRepositoryADO(conn);
+//UserService us = new UserService(repo);
 
 //Location l = new Location(9810, "Nazareth");
 //l.SetStreet("Schoolstraat");
@@ -32,7 +32,24 @@ UserService us = new UserService(repo);
 
 //us.UnsubscribeUser(u.CustomerNumber);
 
-Location l = new Location(9000, "Drongen");
-User u = new User(4, "Aneke", "Aneke.DeVrieze@gmail.com", "0462311664", l);
+//Location l = new Location(9000, "Drongen");
+//User u = new User(4, "Aneke", "Aneke.DeVrieze@gmail.com", "0462311664", l);
 
-us.UpdateUser(u);
+//us.UpdateUser(u);
+
+IRestautantRepository repo = new RestaurantRepositoryADO(conn);
+RestautantService rs = new RestautantService(repo);
+
+Location l = new Location(9000, "Gent");
+Restaurant r = new Restaurant(1,"IlPunto", l, "It.", "Il.Puntoooo@gmail.com", "0965445319");
+
+//rs.AddRestaurant(r);
+
+
+//ITableRepository repo = new TableRepositoryADO(conn);
+//TableService ts = new TableService(repo);
+
+//Table t = new Table(2, 4, 1);
+//ts.AddTable(t);
+
+rs.UpdateRestaurant(r);

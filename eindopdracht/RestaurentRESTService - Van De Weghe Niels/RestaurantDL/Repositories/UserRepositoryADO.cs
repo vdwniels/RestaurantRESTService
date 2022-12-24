@@ -141,7 +141,7 @@ namespace RestaurantDL.Repositories
                 }
                 catch (Exception ex)
                 {
-                    throw new UserRepositoryADOException("UserRepositoryADO - UnsubscribeUser", ex);
+                    throw new UserRepositoryADOException("UserRepositoryADO - UpdateUser", ex);
                 }
                 finally
                 {
