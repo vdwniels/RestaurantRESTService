@@ -87,7 +87,7 @@ namespace RestaurantDL.Repositories
 
         public Restaurant GetRestaurant(int restaurantId)
         {
-            string query = "SELECT * FROM Restaurants r  left join Tables t on t.RestaurantId=r.RestaurantId where r.RestaurantId=@RestaurantId And (t.TableIsDeleted=0 OR t.TableIsDeleted is null);";
+            string query = "SELECT * FROM Restaurants r  left join Tables t on t.RestaurantId=r.RestaurantId where r.RestaurantId=@RestaurantId And (t.TableIsDeleted=0 OR t.TableIsDeleted is null) AND r.RestaurantIsDeleted = 0;";
             SqlConnection conn = new SqlConnection(connectionstring);
             using (SqlCommand cmd = conn.CreateCommand())
             {
@@ -135,7 +135,50 @@ namespace RestaurantDL.Repositories
 
         public IReadOnlyList<Restaurant> GetRestaurantsWithFreeTables(DateTime date, int seats)
         {
-            throw new NotImplementedException();
+            string query = "Select Distinct re.*  from Tables t Join Restaurants re on t.RestaurantId=re.RestaurantId where TableId not in " + // only select Restaurantproperties -- on basis of tableID's that are not reserved at that time
+                "(SELECT t.TableId from tables t Join Reservations r ON t.RestaurantId = r.RestaurantId AND t.TableNumber = r.TableNumberResevation" + // only selects TableId of tables that are reserved at that time-- joins tbles with reservation to get TableId on the basis of tablenumber and restaurantID
+                " where r.DateAndTime>@date and r.DateAndTime<@dayafter and t.TableIsDeleted = 0 and r.ReservationIsDeleted = 0)" +
+                " and t.Seats =@seats and re.RestaurantIsDeleted=0;";
+            SqlConnection conn = new SqlConnection(connectionstring);
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                try
+                {
+                    conn.Open();
+                    cmd.CommandText = query;
+                    DateTime dayAfter = date.AddDays(1);
+                    cmd.Parameters.AddWithValue("@date", date);
+                    cmd.Parameters.AddWithValue("@seats", seats);
+                    cmd.Parameters.AddWithValue("@dayafter", dayAfter);
+
+                    IDataReader dataReader = cmd.ExecuteReader();
+                    Restaurant r = null;
+                    List<Restaurant> restautants = new List<Restaurant>();
+                    while (dataReader.Read())
+                    {
+                        Location l = new Location((int)dataReader["RestaurantPostalCode"], (string)dataReader["RestaurantTown"]);
+
+                        if (dataReader["RestaurantStreet"] != DBNull.Value) l.SetStreet((string)dataReader["RestaurantStreet"]);
+                        if (dataReader["RestaurantNumber"] != DBNull.Value) l.SetNumber((string)dataReader["RestaurantNumber"]);
+
+                        r = new Restaurant((int)dataReader["RestaurantId"], (string)dataReader["RestaurantName"], l, (string)dataReader["Cuisine"], (string)dataReader["RestaurantEmail"], (string)dataReader["RestaurantPhoneNumber"]);
+                        restautants.Add(r);
+                    }
+
+
+                    dataReader.Close();
+                    return restautants.AsReadOnly();
+                }
+                catch (Exception ex)
+                {
+                    throw new UserRepositoryADOException("GetRestaurantsWithFreeTables", ex);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+
         }
 
         public bool HasTables(int restaurantId)
@@ -218,9 +261,63 @@ namespace RestaurantDL.Repositories
             }
         }
 
-        public IReadOnlyList<Restaurant> SearchRestaurantOnLocationAndOrCuisine(int? postalcode, string? cuisine)
+        public IReadOnlyList<Restaurant> SearchRestaurantOnLocationAndOrCuisine(int? postalcode, string? cuisine) // no tables required
         {
-            throw new NotImplementedException();
+
+            SqlConnection conn = new SqlConnection(connectionstring);
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                try
+                {
+                    conn.Open();
+
+                    #region queryconstruction
+                    string query = "SELECT * FROM Restaurants where ";
+                    if (postalcode.HasValue)
+                    { 
+                        query += "RestaurantPostalCode=@RestaurantPostalCode";
+                        cmd.Parameters.AddWithValue("@RestaurantPostalCode", postalcode);
+                    }
+                    if (postalcode.HasValue && !string.IsNullOrEmpty(cuisine)) query += " AND ";
+                    if (!string.IsNullOrEmpty(cuisine))
+                    {
+                        query += "Cuisine=@Cuisine";
+                        cmd.Parameters.AddWithValue("@Cuisine", cuisine);
+
+                    }
+                    query += " And RestaurantIsDeleted=0;";
+                    #endregion
+
+                    cmd.CommandText = query;
+                    
+                    IDataReader dataReader = cmd.ExecuteReader();
+                    Restaurant r = null;
+                    List<Restaurant> restautants = new List<Restaurant>();
+                    while (dataReader.Read())
+                    {
+                        Location l = new Location((int)dataReader["RestaurantPostalCode"], (string)dataReader["RestaurantTown"]);
+
+                        if (dataReader["RestaurantStreet"] != DBNull.Value) l.SetStreet((string)dataReader["RestaurantStreet"]);
+                        if (dataReader["RestaurantNumber"] != DBNull.Value) l.SetNumber((string)dataReader["RestaurantNumber"]);
+
+                        r = new Restaurant((int)dataReader["RestaurantId"], (string)dataReader["RestaurantName"], l, (string)dataReader["Cuisine"], (string)dataReader["RestaurantEmail"], (string)dataReader["RestaurantPhoneNumber"]);
+                        restautants.Add(r);
+                    }
+
+
+                    dataReader.Close();
+                    return restautants.AsReadOnly();
+                }
+                catch (Exception ex)
+                {
+                    throw new UserRepositoryADOException("SearchRestaurantOnLocationAndOrCuisine", ex);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+
         }
 
         public void UpdateRestaurant(Restaurant restaurant)

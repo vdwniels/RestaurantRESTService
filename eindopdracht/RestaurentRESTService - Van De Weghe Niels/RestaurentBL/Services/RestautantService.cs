@@ -23,8 +23,7 @@ namespace RestaurantBL.Services
         {
             try
             {
-                if (cuisine.Trim() == "") cuisine = null;
-                if ((postalcode == null) && (cuisine == null)) throw new RestaurantServiceException("RestaurantService - SearchRestaurantOnLocationAndOrCuisine - no entries");
+                if ((postalcode == null) && (string.IsNullOrEmpty(cuisine))) throw new RestaurantServiceException("RestaurantService - SearchRestaurantOnLocationAndOrCuisine - no entries");
                 if ((postalcode != null) && (postalcode.ToString().Length != 4)) throw new RestaurantServiceException("RestaurantService - SearchRestaurantOnLocationAndOrCuisine - postalcode must be 4 digits");
                 IReadOnlyList<Restaurant> list = new List<Restaurant>();
                 list = repo.SearchRestaurantOnLocationAndOrCuisine(postalcode, cuisine);
@@ -40,7 +39,7 @@ namespace RestaurantBL.Services
             }
         }
 
-        public IReadOnlyList<Restaurant> SearchRestaurantsWithFreeTables(DateTime date, int seats)
+        public IReadOnlyList<Restaurant> SearchRestaurantsWithFreeTables(DateTime date, int seats)//TODO further testing
         {
             try
             {
@@ -49,6 +48,7 @@ namespace RestaurantBL.Services
                 if (seats <= 0) throw new RestaurantServiceException("RestaurantService - GetRestaurantsWithFreeTables - at least one attendee required");
                 IReadOnlyList<Restaurant> list = new List<Restaurant>();
                 list = repo.GetRestaurantsWithFreeTables(date, seats);
+                if (list.Count == 0) throw new RestaurantException("There are no free tables at this time for this amount of people. However, we may assign you a larger table. Feel free to search for more tabl with more seats.");
                 return list;
             }
             catch (RestaurantServiceException)
@@ -105,14 +105,16 @@ namespace RestaurantBL.Services
                 if (restaurant == null) throw new RestaurantServiceException("RestaurantService - UpdateRestaurant - no restaurant data entry");
                 if (!repo.RestaurantExists(restaurant.RestaurantId)) throw new RestaurantServiceException("RestaurantService - UpdateRestaurant - restaurant doesn't exist");
                 Restaurant currentRestaurant = repo.GetRestaurant(restaurant.RestaurantId);
-                #region test
 
-                foreach(Table t in currentRestaurant._tables.Keys)
-                {
-                    Console.WriteLine($"{currentRestaurant.Name} --- {t.TableNumber} - {t.Seats} - {t.RestaurantId}");
-                }
+                //#region test
 
-                #endregion
+                //foreach(Table t in currentRestaurant._tables.Keys)
+                //{
+                //    Console.WriteLine($"{currentRestaurant.Name} --- {t.TableNumber} - {t.Seats} - {t.RestaurantId}");
+                //}
+
+                //#endregion
+
                 if (restaurant == currentRestaurant || currentRestaurant == null) throw new RestaurantServiceException("RestaurantService - UpdateRestaurant - no different values");// operator overload
                 repo.UpdateRestaurant(restaurant);
             }

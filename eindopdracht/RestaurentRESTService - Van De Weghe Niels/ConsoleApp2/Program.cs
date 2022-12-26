@@ -40,8 +40,8 @@ string conn = @"Data Source=FRENK\SQLEXPRESS;Initial Catalog=RestaurantRESTdef;I
 IRestautantRepository repo = new RestaurantRepositoryADO(conn);
 RestautantService rs = new RestautantService(repo);
 
-Location l = new Location(9000, "Gent");
-Restaurant r = new Restaurant(1,"IlPunto", l, "It.", "Il.Puntoooo@gmail.com", "0965445319");
+//Location l = new Location(9000, "Gent");
+//Restaurant r = new Restaurant(1,"IlPunto", l, "It.", "Il.Puntoooo@gmail.com", "0965445319");
 
 //rs.AddRestaurant(r);
 
@@ -52,4 +52,10 @@ Restaurant r = new Restaurant(1,"IlPunto", l, "It.", "Il.Puntoooo@gmail.com", "0
 //Table t = new Table(2, 4, 1);
 //ts.AddTable(t);
 
-rs.UpdateRestaurant(r);
+//rs.UpdateRestaurant(r);
+IReadOnlyList<Restaurant> restaurants = rs.SearchRestaurantsWithFreeTables(DateTime.Today.AddDays(2), 2);
+
+foreach (Restaurant r in restaurants)
+{
+    Console.WriteLine(r.ToString());
+}
