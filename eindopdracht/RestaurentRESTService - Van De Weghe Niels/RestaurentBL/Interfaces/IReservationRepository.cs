@@ -15,7 +15,7 @@ namespace RestaurantBL.Interfaces
         List<Reservation> GetReservations(int restaurantId, DateTime? startDate, DateTime? endDate);
         bool reservationExists(int reservationId);
         List<Reservation> SearchReservations(int customerId, DateTime? startDate, DateTime? endDate);
-        List<Table> SelectReservedTables(int? reservationId, int restaurantId, DateTime dateAndHour);
+        List<Table> SelectFreeTables(int restaurantId, DateTime dateAndHour);
         void UpdateReservation(Reservation reservation);
     }
 }

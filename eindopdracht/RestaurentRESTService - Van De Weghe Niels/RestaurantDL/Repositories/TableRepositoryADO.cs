@@ -75,37 +75,6 @@ namespace RestaurantDL.Repositories
             }
         }
 
-        public List<Table> GetAllTablesOfRestaurant(int restaurantId)
-        {
-            string query = "select * from Tables where RestaurantId = @restaurantId and TableIsDeleted = 0;";
-            SqlConnection conn = new SqlConnection(connectionstring);
-            using (SqlCommand cmd = conn.CreateCommand())
-            {
-                try
-                {
-                    conn.Open();
-                    cmd.CommandText = query;
-                    cmd.Parameters.AddWithValue("@restaurantId", restaurantId);
-                    IDataReader dataReader = cmd.ExecuteReader();
-                    List<Table> tables = new List<Table>();
-                    while (dataReader.Read())
-                    {
-                        Table t = new Table((int)dataReader["TableId"], (int)dataReader["TableNumber"], (int)dataReader["Seats"], (int)dataReader["RestaurantId"]);
-                        tables.Add(t);
-                    }
-                    return tables;
-                }
-                catch (Exception ex)
-                {
-                    throw new TableRepositoryADOException("TableRepositoryADO - TableExists", ex);
-                }
-                finally
-                {
-                    conn.Close();
-                }
-            }
-
-        }
 
         public Table GetTable(int tableId)
         {

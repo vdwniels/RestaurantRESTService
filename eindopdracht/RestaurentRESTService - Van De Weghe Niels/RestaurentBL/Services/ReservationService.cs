@@ -40,14 +40,16 @@ namespace RestaurantBL.Services
             }
         }
 
-        private int SelectFreeTable (int? reservationId, int restaurantId, DateTime DateAndHour, int seats)
+        public int SelectFreeTable (int? reservationId, int restaurantId, DateTime DateAndHour, int seats)
         {
             try
             {
-                List<Table> allTables = tableService.GetAllTablesOfRestaurant(restaurantId); 
-                List<Table> reservedTables = repo.SelectReservedTables(reservationId, restaurantId, DateAndHour); 
+                //List<Table> allTables = tableService.GetAllTablesOfRestaurant(restaurantId); 
+                //List<Table> reservedTables = repo.SelectReservedTables(reservationId, restaurantId, DateAndHour); 
 
-                List<Table> FreeTables = allTables.Except(reservedTables).ToList();
+                //List<Table> FreeTables = allTables.Except(reservedTables).ToList();
+
+                List<Table> FreeTables = repo.SelectFreeTables(restaurantId, DateAndHour);
 
                 int freeTableWithMostSeats = FreeTables.Max(r => r.Seats);
 

@@ -11,7 +11,6 @@ namespace RestaurantBL.Interfaces
     {
         Table AddTable(Table table);
         void DeleteTable(int tableId);
-        List<Table> GetAllTablesOfRestaurant(int restaurantId);
         Table GetTable(int tableId);
         bool TableExists(int tableNumber, int restaurantId);
         bool TableExists(int tableId);

@@ -3,6 +3,7 @@ using RestaurantBL.Interfaces;
 using RestaurantBL.Model;
 using RestaurantBL.Services;
 using RestaurantDL.Repositories;
+using System.Collections.Generic;
 
 string conn = @"Data Source=FRENK\SQLEXPRESS;Initial Catalog=RestaurantRESTdef;Integrated Security=True";
 
@@ -63,7 +64,7 @@ string conn = @"Data Source=FRENK\SQLEXPRESS;Initial Catalog=RestaurantRESTdef;I
 ITableRepository repo = new TableRepositoryADO(conn);
 TableService ts = new TableService(repo);
 
-Table t = new Table(1004,10, 9, 4);
+//Table t = new Table(1004,10, 9, 4);
 
 //ts.AddTable(t);
 //List<Table> tables = ts.GetAllTablesOfRestaurant(2);
@@ -72,4 +73,19 @@ Table t = new Table(1004,10, 9, 4);
 //    Console.WriteLine(table.ToString());
 //}
 
-ts.UpdateTable(t);
+//ts.UpdateTable(t);
+
+IReservationRepository resRepo = new ReservationRepositoryADO(conn);
+
+ReservationService rs = new ReservationService(resRepo,ts);
+
+//ReservationRepositoryADO a = new ReservationRepositoryADO(conn);
+//List<Table> t = a.SelectFreeTables(1, new DateTime(2022, 12, 27, 18, 30, 00));
+
+//foreach (Table t2 in t)
+//{
+//    Console.WriteLine(t2.ToString());
+//}
+
+int t = rs.SelectFreeTable(null, 1, new DateTime(2022, 12, 27, 20, 00, 00), 1);
+Console.WriteLine(t);

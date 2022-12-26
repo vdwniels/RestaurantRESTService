@@ -18,12 +18,6 @@ namespace RestaurantBL.Services
             this.repo = repo;
         }
 
-        public List<Table> GetAllTablesOfRestaurant(int restaurantId)
-        {
-            List<Table> tables = new List<Table>();
-            tables = repo.GetAllTablesOfRestaurant(restaurantId);
-            return tables;
-        }
 
         public Table AddTable (Table table)
         {
