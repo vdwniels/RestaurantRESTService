@@ -37,8 +37,8 @@ string conn = @"Data Source=FRENK\SQLEXPRESS;Initial Catalog=RestaurantRESTdef;I
 
 //us.UpdateUser(u);
 
-IRestautantRepository repo = new RestaurantRepositoryADO(conn);
-RestautantService rs = new RestautantService(repo);
+//IRestautantRepository repo = new RestaurantRepositoryADO(conn);
+//RestautantService rs = new RestautantService(repo);
 
 //Location l = new Location(9000, "Gent");
 //Restaurant r = new Restaurant(1,"IlPunto", l, "It.", "Il.Puntoooo@gmail.com", "0965445319");
@@ -53,9 +53,23 @@ RestautantService rs = new RestautantService(repo);
 //ts.AddTable(t);
 
 //rs.UpdateRestaurant(r);
-IReadOnlyList<Restaurant> restaurants = rs.SearchRestaurantsWithFreeTables(DateTime.Today.AddDays(2), 2);
+//IReadOnlyList<Restaurant> restaurants = rs.SearchRestaurantsWithFreeTables(DateTime.Today.AddDays(2), 2);
 
-foreach (Restaurant r in restaurants)
-{
-    Console.WriteLine(r.ToString());
-}
+//foreach (Restaurant r in restaurants)
+//{
+//    Console.WriteLine(r.ToString());
+//}
+
+ITableRepository repo = new TableRepositoryADO(conn);
+TableService ts = new TableService(repo);
+
+Table t = new Table(1004,10, 9, 4);
+
+//ts.AddTable(t);
+//List<Table> tables = ts.GetAllTablesOfRestaurant(2);
+//foreach (Table table in tables)
+//{
+//    Console.WriteLine(table.ToString());
+//}
+
+ts.UpdateTable(t);

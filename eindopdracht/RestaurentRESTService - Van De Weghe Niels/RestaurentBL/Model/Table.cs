@@ -50,6 +50,11 @@ namespace RestaurantBL.Model
             RestaurantId = restaurantId;
         }
 
+        public override string ToString()
+        {
+            return $"Tablenr {TableNumber} of Restaurant {RestaurantId} w/ {Seats} seats";
+        }
+
         public override bool Equals(object? obj)
         {
             return obj is Table table &&

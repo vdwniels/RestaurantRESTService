@@ -30,7 +30,7 @@ namespace RestaurantBL.Services
             try
             {
                 if (table == null) throw new RestaurantServiceException("TableService - AddRestaurant - no table entry");
-                if (repo.TableExists(table.TableNumber,table.RestaurantId)) throw new RestaurantServiceException("RestaurantService - AddRestaurant - Restaurant with this phonenumber and/or email already exists");
+                if (repo.TableExists(table.TableNumber,table.RestaurantId)) throw new RestaurantServiceException("TableService - AddRestaurant - Restaurant already has a tuble with this tablenumber");
                 Table tableWithId = repo.AddTable(table);
                 return tableWithId;
             }
