@@ -10,6 +10,11 @@ namespace RestaurantBL.Model
 {
     public class Reservation
     {
+        public Reservation(int reservationNumber,int tablenumber, Restaurant restaurantInfo, User customer, int seats, DateTime dateAndHour) : this (restaurantInfo, customer, seats, dateAndHour)
+        {
+            SetReservationNumber(reservationNumber);
+            SetTableNumber(tablenumber);
+        }
         public Reservation(Restaurant restaurantInfo, User customer, int seats, DateTime dateAndHour)
         {
             SetRestaurantInfo(restaurantInfo);
@@ -18,11 +23,6 @@ namespace RestaurantBL.Model
             SetDateAndHour(dateAndHour);
         }
 
-        public Reservation(int reservationNumber,int tablenumber, Restaurant restaurantInfo, User customer, int seats, DateTime dateAndHour) : this (restaurantInfo, customer, seats, dateAndHour)
-        {
-            SetReservationNumber(reservationNumber);
-            SetTableNumber(tablenumber);
-        }
 
         public int ReservationNumber { get; set; }
         public Restaurant RestaurantInfo { get; set; }
@@ -52,21 +52,21 @@ namespace RestaurantBL.Model
         public void SetTableNumber(int tableNumber)
         {
             if (tableNumber < 1) throw new ReservationException("Reservation - SetTableNumber - TableNumber less than 1");
-            if (!this.RestaurantInfo._tables.ContainsValue(tableNumber)) throw new ReservationException("Reservation - SetTableNumber - Restaurant doesn't contain a table with this table number ");
+            if (this.RestaurantInfo._tables.Count > 0 && !this.RestaurantInfo._tables.ContainsValue(tableNumber)) throw new ReservationException("Reservation - SetTableNumber - Restaurant doesn't contain a table with this table number ");
             Tablenumber = tableNumber;
         }
 
         public void SetSeats(int seats)
         {
             if (seats < 1) throw new ReservationException("Reservation - SetSeats - must have at least one chair");
-            if (seats > this.RestaurantInfo._tables.FirstOrDefault(x => x.Value == this.Tablenumber).Key.Seats) throw new ReservationException("Reservation - SetSeats - Table not big enough");
+            if (this.Tablenumber != 0 && seats > this.RestaurantInfo._tables.FirstOrDefault(x => x.Value == this.Tablenumber).Key.Seats) throw new ReservationException("Reservation - SetSeats - Table not big enough");
             Seats = seats;
         }
 
         public void SetDateAndHour(DateTime dateAndHour)
         {
             if (dateAndHour == null) throw new ReservationException("Reservation - SetDateAndHour - no DateAndHour entry");
-            if (dateAndHour > DateTime.Now) throw new ReservationException("Reservation - SetDateAndHour - Can't make reservation in the past");
+            if (dateAndHour < DateTime.Now) throw new ReservationException("Reservation - SetDateAndHour - Can't make reservation in the past");
             if (dateAndHour.Minute != 30 && dateAndHour.Minute != 00 ) throw new ReservationException("Reservation - SetDateAndHour - Can only make a reservation every other half hour (e.g. 20:00 and 20:30)");
             DateAndHour = dateAndHour;
         }

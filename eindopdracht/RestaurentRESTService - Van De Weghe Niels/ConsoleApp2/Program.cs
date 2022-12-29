@@ -38,8 +38,8 @@ string conn = @"Data Source=FRENK\SQLEXPRESS;Initial Catalog=RestaurantRESTdef;I
 
 //us.UpdateUser(u);
 
-//IRestautantRepository repo = new RestaurantRepositoryADO(conn);
-//RestautantService rs = new RestautantService(repo);
+IRestautantRepository restorepo = new RestaurantRepositoryADO(conn);
+RestaurantService restoserv= new RestaurantService(restorepo);
 
 //Location l = new Location(9000, "Gent");
 //Restaurant r = new Restaurant(1,"IlPunto", l, "It.", "Il.Puntoooo@gmail.com", "0965445319");
@@ -61,8 +61,8 @@ string conn = @"Data Source=FRENK\SQLEXPRESS;Initial Catalog=RestaurantRESTdef;I
 //    Console.WriteLine(r.ToString());
 //}
 
-ITableRepository repo = new TableRepositoryADO(conn);
-TableService ts = new TableService(repo);
+ITableRepository tablerepo = new TableRepositoryADO(conn);
+TableService ts = new TableService(tablerepo);
 
 //Table t = new Table(1004,10, 9, 4);
 
@@ -87,5 +87,19 @@ ReservationService rs = new ReservationService(resRepo,ts);
 //    Console.WriteLine(t2.ToString());
 //}
 
-int t = rs.SelectFreeTable(null, 1, new DateTime(2022, 12, 27, 20, 00, 00), 1);
-Console.WriteLine(t);
+//Location l = new Location(9810, "Nazareth");
+//l.SetStreet("Warandestraat");
+//Restaurant r = new Restaurant(1, "IlPunto", l, "It.", "il.puntoooo@gmail.com", "0965445319");
+
+
+//User u = new User(2, "Ann", "ann.desmet@gmail.com", "0462322353", l);
+
+//Reservation reserv = new Reservation(r, u, 2, new DateTime(2022, 12, 29, 20, 30, 00));
+//rs.AddReservation(reserv);
+
+//int t = rs.SelectFreeTable(null, 1, new DateTime(2022, 12, 27, 20, 00, 00), 1);
+//Console.WriteLine(t);
+
+UserRepositoryADO userRepo = new UserRepositoryADO(conn);
+User u = userRepo.GetUser(1);
+Console.WriteLine(u.Name);

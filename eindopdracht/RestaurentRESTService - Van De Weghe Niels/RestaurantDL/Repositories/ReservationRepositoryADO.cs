@@ -22,7 +22,32 @@ namespace RestaurantDL.Repositories
 
         public Reservation AddReservation(Reservation reservation)
         {
-            throw new NotImplementedException();
+            string sql = @"INSERT INTO Reservations(RestaurantId,CustomerId,ReservationSeats,DateAndTime,TableNumberResevation) output Inserted.ReservationNumber Values (@RestaurantId,@CustomerId,@ReservationSeats,@DateAndTime,@TableNumberReservation)";
+            SqlConnection conn = new SqlConnection(connectionstring);
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                try
+                {
+                    conn.Open();
+                    cmd.CommandText = sql;
+                    cmd.Parameters.AddWithValue("@RestaurantId", reservation.RestaurantInfo.RestaurantId);
+                    cmd.Parameters.AddWithValue("@CustomerId", reservation.Customer.CustomerNumber);
+                    cmd.Parameters.AddWithValue("@ReservationSeats", reservation.Seats);
+                    cmd.Parameters.AddWithValue("@DateAndTime", reservation.DateAndHour);
+                    cmd.Parameters.AddWithValue("@TableNumberReservation", reservation.Tablenumber);
+                    int newId = (int)cmd.ExecuteScalar();
+                    reservation.SetReservationNumber(newId);
+                    return reservation;
+                }
+                catch (Exception ex)
+                {
+                    throw new UserRepositoryADOException("ReservationRepositoryADO - AddReservation", ex);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
         }
 
         public void CancelReservation(int reservationId)

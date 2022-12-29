@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace RestaurantBL.Services
 {
-    public class RestautantService
+    public class RestaurantService
     {
         private IRestautantRepository repo;
 
-        public RestautantService(IRestautantRepository repo)
+        public RestaurantService(IRestautantRepository repo)
         {
             this.repo = repo;
         }
