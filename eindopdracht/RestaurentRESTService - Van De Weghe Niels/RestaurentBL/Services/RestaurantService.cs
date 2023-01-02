@@ -48,7 +48,7 @@ namespace RestaurantBL.Services
                 if (seats <= 0) throw new RestaurantServiceException("RestaurantService - GetRestaurantsWithFreeTables - at least one attendee required");
                 IReadOnlyList<Restaurant> list = new List<Restaurant>();
                 list = repo.GetRestaurantsWithFreeTables(date, seats);
-                if (list.Count == 0) throw new RestaurantException("There are no free tables at this time for this amount of people. However, we may assign you a larger table. Feel free to search for more tabl with more seats.");
+                if (list.Count == 0) throw new RestaurantServiceException("There are no free tables at this time for this amount of people. However, we may assign you a larger table. Feel free to search for a table with more seats.");
                 return list;
             }
             catch (RestaurantServiceException)
@@ -125,6 +125,22 @@ namespace RestaurantBL.Services
             catch (Exception ex)
             {
                 throw new RestaurantServiceException("UpdateRestaurant", ex);
+            }
+        }
+
+        public Restaurant GetRestaurant(int restaurantId)
+        {
+            try
+            {
+                return repo.GetRestaurant(restaurantId);
+            }
+            catch (RestaurantServiceException)
+            {
+                throw;
+            }
+            catch(Exception ex)
+            {
+                throw new RestaurantServiceException("GetRestaurant", ex);
             }
         }
     }

@@ -20,12 +20,29 @@ namespace RestaurantBL.Services
             this.tableService = ts;
         }
 
+        public Reservation GetReservation(int reservationId)
+        {
+            try
+            {
+                return repo.GetReservation(reservationId);
+            }
+            catch (ReservationServiceException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new ReservationServiceException("GetReservation", ex);
+            }
+        }
+
         public Reservation AddReservation(Reservation reservation)
         {
             try
             {
+                if (reservation.DateAndHour < DateTime.Now) throw new ReservationServiceException("ReservationService - AddReservation - Can't make reservation in the past");
                 if (reservation == null) throw new ReservationServiceException("ReservationService - AddReservation - no reservation data entry");
-                int tableNumber = SelectFreeTable(null,reservation.RestaurantInfo.RestaurantId, reservation.DateAndHour, reservation.Seats);
+                int tableNumber = SelectFreeTable(reservation.RestaurantInfo.RestaurantId, reservation.DateAndHour, reservation.Seats);
                 reservation.SetTableNumber(tableNumber);
                 Reservation reservationWithIdAndTableNumber = repo.AddReservation(reservation);
                 return reservationWithIdAndTableNumber;
@@ -40,7 +57,7 @@ namespace RestaurantBL.Services
             }
         }
 
-        public int SelectFreeTable (int? reservationId, int restaurantId, DateTime DateAndHour, int seats)
+        public int SelectFreeTable (int restaurantId, DateTime DateAndHour, int seats)
         {
             try
             {
@@ -76,14 +93,51 @@ namespace RestaurantBL.Services
             }
         }
 
-        public Reservation UpdateReservation(Reservation reservation)
+        public int SelectFreeTable(int reservationNumber, int restaurantId, DateTime DateAndHour, int seats)
+        {
+            try
+            {
+                //List<Table> allTables = tableService.GetAllTablesOfRestaurant(restaurantId); 
+                //List<Table> reservedTables = repo.SelectReservedTables(reservationId, restaurantId, DateAndHour); 
+
+                //List<Table> FreeTables = allTables.Except(reservedTables).ToList();
+
+                List<Table> FreeTables = repo.SelectFreeTables(reservationNumber,restaurantId, DateAndHour);
+
+                int freeTableWithMostSeats = FreeTables.Max(r => r.Seats);
+
+                for (int i = seats; i <= freeTableWithMostSeats; i++)
+                {
+                    foreach (Table t in FreeTables)
+                    {
+                        if (t.Seats == i)
+                        {
+                            return t.TableNumber;
+                        }
+                    }
+                }
+                throw new ReservationServiceException("ReservationService - SelectFreeTable - sadly, this restaurant doesn't have any more free tables at this time");
+
+            }
+            catch (ReservationServiceException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new ReservationServiceException("SelectFreeTable", ex);
+            }
+        }
+
+
+        public Reservation UpdateReservation(Reservation reservation, Reservation currentReservation)
         {
             try
             {
                 if (reservation == null) throw new ReservationServiceException("ReservationService - UpdateReservation - no reservation data entry");
-                Reservation currentReservation = repo.GetReservation(reservation.ReservationNumber);
+                if (currentReservation.DateAndHour < DateTime.Now) throw new ReservationServiceException("ReservationService - UpdateReservation - No Updates allowed for expired reservations");
                 if (reservation == currentReservation) throw new ReservationServiceException("ReservationService - UpdateReservation - No different values");
-                int tableNumber = SelectFreeTable(reservation.ReservationNumber, reservation.RestaurantInfo.RestaurantId, reservation.DateAndHour, reservation.Seats);// when a reservation is updated, it may also need a new tablenumber that the code picks out for them, but we need to take reservationId into account because if the new reservation gets the same tablenumber, the old reservation may overlap because that is the one that gets updated 
+                int tableNumber = SelectFreeTable(reservation.ReservationNumber, reservation.RestaurantInfo.RestaurantId, reservation.DateAndHour, reservation.Seats);
                 reservation.SetTableNumber(tableNumber);
                 repo.UpdateReservation(reservation);
                 return reservation;
@@ -111,15 +165,14 @@ namespace RestaurantBL.Services
             }
             catch (Exception ex)
             {
-                throw new ReservationServiceException("CancelReservation", ex);
+                throw ;
             }
         }
 
         public List<Reservation> SearchReservations (int customerId, DateTime? startDate, DateTime? endDate)
         {
-            try
+            try//TODO hesreservations?
             {
-                if (!startDate.HasValue || !endDate.HasValue) throw new ReservationServiceException("ReservationService - SearchReservations - no data");
                 List<Reservation> reservations = repo.SearchReservations(customerId, startDate, endDate);
                 return reservations;
             }

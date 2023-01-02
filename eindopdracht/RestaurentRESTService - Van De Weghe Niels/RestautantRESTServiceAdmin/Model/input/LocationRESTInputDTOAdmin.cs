@@ -1,6 +1,6 @@
-﻿namespace RestaurantRESTServiceUser.Model.input
+﻿namespace RestaurantRESTServiceAdmin.Model.input
 {
-    public class LocationRESTInputDTO
+    public class LocationRESTInputDTOAdmin
     {
         public int PostalCode { get; set; }
         public string Town { get; set; }

@@ -7,6 +7,7 @@ string connectionString = @"Data Source=FRENK\SQLEXPRESS;Initial Catalog=Restaur
 // Add services to the container.
 
 builder.Services.AddControllers();
+
 builder.Services.AddSingleton<IReservationRepository>(r => new ReservationRepositoryADO(connectionString));
 builder.Services.AddSingleton<IRestautantRepository>(r => new RestaurantRepositoryADO(connectionString));
 builder.Services.AddSingleton<IUserRepository>(r => new UserRepositoryADO(connectionString));

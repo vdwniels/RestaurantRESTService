@@ -1,4 +1,4 @@
-﻿namespace RestaurantRESTServiceUser.Model.output
+﻿namespace RestaurantRESTServiceAdmin.Model.output
 {
     public class UserRESTOutputDTO
     {

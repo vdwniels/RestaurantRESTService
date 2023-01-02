@@ -66,8 +66,8 @@ namespace RestaurantBL.Model
         public void SetDateAndHour(DateTime dateAndHour)
         {
             if (dateAndHour == null) throw new ReservationException("Reservation - SetDateAndHour - no DateAndHour entry");
-            if (dateAndHour < DateTime.Now) throw new ReservationException("Reservation - SetDateAndHour - Can't make reservation in the past");
-            if (dateAndHour.Minute != 30 && dateAndHour.Minute != 00 ) throw new ReservationException("Reservation - SetDateAndHour - Can only make a reservation every other half hour (e.g. 20:00 and 20:30)");
+            //if (dateAndHour < DateTime.Now) throw new ReservationException("Reservation - SetDateAndHour - Can't make reservation in the past"); We can use getmethod for searching reservations in the past
+            if ((dateAndHour.Minute != 30 && dateAndHour.Minute != 00) || (dateAndHour.Second != 00) || (dateAndHour.Millisecond != 00)) throw new ReservationException("Reservation - SetDateAndHour - Can only make a reservation every other half hour (e.g. 20:00 and 20:30)");
             DateAndHour = dateAndHour;
         }
 

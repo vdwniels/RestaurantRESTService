@@ -45,5 +45,14 @@ namespace RestaurantBL.Model
             if (string.IsNullOrWhiteSpace(number)) throw new LocationException("Location - SetNumber - No number entry");
             Number = number.Trim();
         }
+
+        public override string ToString()
+        {
+            string s = $"";
+            if (!string.IsNullOrEmpty(Street)) s += $"{Street} ";
+            if (!string.IsNullOrEmpty(Number)) s += $"{Number} ";
+            s += $"{PostalCode} {Town}";
+            return s;
+        }
     }
 }
