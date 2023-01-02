@@ -22,5 +22,19 @@ namespace RestaurantRESTServiceUser.Mappers
                 throw new MapException("MapToRestaurantDomain", ex);
             }
         }
+
+        public static Table MapToTableDomain(TableRESTInputDTOAdmin dto)
+        {
+            try
+            {
+                Table t = new Table(dto.TableNumber, dto.Seats, dto.RestaurantId);
+                return t;
+            }
+            catch (Exception ex)
+            {
+                throw new MapException("MapToTableDomain", ex);
+            }
+        }
+
     }
 }

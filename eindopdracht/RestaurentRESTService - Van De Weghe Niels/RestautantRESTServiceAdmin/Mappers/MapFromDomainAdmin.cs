@@ -16,13 +16,13 @@ namespace RestaurantRESTServiceUser.Mappers
                 RestaurantRESTOutputDTOAdmin dto = new RestaurantRESTOutputDTOAdmin(r.RestaurantId, r.Name, r.Cuisine, r.Email, r.PhoneNumber, r.Location.PostalCode, r.Location.Town, r.Location.Street, r.Location.Number);
                 foreach (Table t in r._tables.Keys)
                 {
-                    dto.AddTable(new TableRESTOutputDTOAdmin(t.TableId, t.TableNumber, t.Seats));
+                    dto.AddTable(new TableRESTOutputDTOAdmin(t.TableId, t.TableNumber, t.Seats,t.RestaurantId));
                 }
                 return dto;
             }
             catch (Exception ex)
             {
-                throw new MapException("MapFromUserDomain", ex);
+                throw new MapException("MapFromRestaurantDomain", ex);
             }
         }
 
@@ -35,8 +35,22 @@ namespace RestaurantRESTServiceUser.Mappers
             }
             catch (Exception ex)
             {
-                throw new MapException("MapFromUserDomain", ex);
+                throw new MapException("MapFromRestaurantWithoutTablesDomain", ex);
             }
         }
+
+        public static TableRESTOutputDTOAdmin MapFromTableDomain(Table t)
+        {
+            try
+            {
+                TableRESTOutputDTOAdmin dto = new TableRESTOutputDTOAdmin(t.TableId, t.TableNumber, t.Seats,t.RestaurantId);
+                return dto;
+            }
+            catch (Exception ex)
+            {
+                throw new MapException("MapFromTableDomain", ex);
+            }
+        }
+
     }
 }

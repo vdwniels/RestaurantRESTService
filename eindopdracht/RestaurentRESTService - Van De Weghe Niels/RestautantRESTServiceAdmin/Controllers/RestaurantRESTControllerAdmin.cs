@@ -85,5 +85,65 @@ namespace RestautantRESTServiceAdmin.Controllers
             }
         }
 
+        #region table 
+        [HttpGet("/GetTable/{tableId}")]
+        public ActionResult<TableRESTInputDTOAdmin> GetTable(int tableId)
+        {
+            try
+            {
+                Table table = tableService.GetTable(tableId);
+                return Ok(MapFromDomainAdmin.MapFromTableDomain(table));
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        //[HttpPost("/PostTable/")]
+        //public ActionResult<TableRESTInputDTOAdmin> PostTable([FromBody] TableRESTInputDTOAdmin restDTO)
+        //{
+        //    try
+        //    {
+        //        Table table = tableService.AddTable(MapToDomainAdmin.MapToTableDomain(restDTO));
+        //        return CreatedAtAction(nameof(GetRestaurant), new { RestaurantId = restaurant.RestaurantId }, MapFromDomainAdmin.MapFromRestaurantDomain(restaurant));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
+
+
+        //[HttpPut("/Deleterestaurant/{restaurantId}")]
+        //public IActionResult Deleterestaurant(int restaurantId)
+        //{
+        //    try
+        //    {
+        //        restaurantService.DeleteRestaurant(restaurantId);
+        //        return NoContent();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return NotFound(ex.Message);
+        //    }
+        //}
+
+        //[HttpPut("/PutRestaurant/{restaurantId}")]
+        //public IActionResult PutRestaurant(int restaurantId, [FromBody] RestaurantRESTInputDTOAdmin restDTO)
+        //{
+        //    try
+        //    {
+        //        Restaurant restaurant = MapToDomainAdmin.MapToRestaurantDomain(restDTO);
+        //        restaurant.SetRestaurantId(restaurantId);
+        //        restaurantService.UpdateRestaurant(restaurant);
+        //        return CreatedAtAction(nameof(GetRestaurant), new { restaurantId = restaurant.RestaurantId }, MapFromDomainAdmin.MapFromRestaurantWithoutTablesDomain(restaurant));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
+        #endregion
     }
 }

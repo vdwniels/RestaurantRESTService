@@ -1,4 +1,4 @@
-﻿namespace RestautantRESTServiceAdmin.Model.output
+﻿namespace RestaurantRESTServiceUser.Model.output
 {
     public class TableRESTOutputDTOAdmin
     {
@@ -14,5 +14,6 @@
         public int TableNumber { get; set; }
         public int Seats { get; set; }
         public int RestaurantId { get; set; }
+
     }
 }

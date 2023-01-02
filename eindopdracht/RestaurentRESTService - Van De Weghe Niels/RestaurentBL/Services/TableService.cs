@@ -18,6 +18,21 @@ namespace RestaurantBL.Services
             this.repo = repo;
         }
 
+        public Table GetTable(int tableId)
+        {
+            try
+            {
+                return repo.GetTable(tableId);
+            }
+            catch (UserServiceException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new UserServiceException("GetTable", ex);
+            }
+        }
 
         public Table AddTable (Table table)
         {
