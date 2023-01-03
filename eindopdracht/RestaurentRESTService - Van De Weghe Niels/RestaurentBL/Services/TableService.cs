@@ -22,6 +22,7 @@ namespace RestaurantBL.Services
         {
             try
             {
+                if (!repo.TableExists(tableId)) throw new TableServiceException("TableService - GetTable - no table entry");
                 return repo.GetTable(tableId);
             }
             catch (UserServiceException)
@@ -38,8 +39,8 @@ namespace RestaurantBL.Services
         {
             try
             {
-                if (table == null) throw new RestaurantServiceException("TableService - AddRestaurant - no table entry");
-                if (repo.TableExists(table.TableNumber,table.RestaurantId)) throw new RestaurantServiceException("TableService - AddRestaurant - Restaurant already has a tuble with this tablenumber");
+                if (table == null) throw new TableServiceException("TableService - AddTable - no table entry");
+                if (repo.TableExists(table.TableNumber,table.RestaurantId)) throw new TableServiceException("TableService - AddTable - Table already exists");
                 Table tableWithId = repo.AddTable(table);
                 return tableWithId;
             }
@@ -49,7 +50,7 @@ namespace RestaurantBL.Services
             }
             catch (Exception ex)
             {
-                throw new RestaurantServiceException("AddRestaurant", ex);
+                throw new RestaurantServiceException("AddTabl", ex);
             }
 
         }
@@ -77,6 +78,7 @@ namespace RestaurantBL.Services
             {
                 if ( table == null ) throw new TableServiceException("tableService - UpdateTable - no table entry");
                 if (!repo.TableExists(table.TableId)) throw new TableServiceException("tableService - UpdateTable - table does not exist");
+                if (repo.TableExists(table.TableNumber, table.RestaurantId)) throw new TableServiceException("TableService - AddTable - Table with this tablenumber already exists");
                 Table currentTable = repo.GetTable(table.TableId);
                 if (table == currentTable) throw new TableServiceException("tableService - UpdateTable - no different data");
                 repo.UpdateTable(table);

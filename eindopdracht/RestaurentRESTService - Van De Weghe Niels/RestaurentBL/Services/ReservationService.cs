@@ -24,6 +24,7 @@ namespace RestaurantBL.Services
         {
             try
             {
+                if (!repo.reservationExists(reservationId)) throw new ReservationServiceException("ReservationService - GetReservation - reservation doesn't exist");
                 return repo.GetReservation(reservationId);
             }
             catch (ReservationServiceException)

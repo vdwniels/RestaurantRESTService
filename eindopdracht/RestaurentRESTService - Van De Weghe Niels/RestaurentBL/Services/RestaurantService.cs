@@ -80,7 +80,7 @@ namespace RestaurantBL.Services
             }
         }
 
-        public void DeleteRestaurant (int restaurantId) //TODO test when all tables are IsDeleted = 1
+        public void DeleteRestaurant (int restaurantId)
         {
             try
             {

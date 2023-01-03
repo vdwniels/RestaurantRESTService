@@ -22,6 +22,7 @@ namespace RestaurantBL.Services
         {
             try
             {
+                if (!repo.UserExists(customerNumber)) throw new UserServiceException("UserService - Getuser - User does not exist");
                 return repo.GetUser(customerNumber);
             }
             catch(UserServiceException)
