@@ -59,6 +59,32 @@ namespace RestaurantDL.Repositories
 
         }
 
+        public void DeleteAllTables(int restaurantId)
+        {
+            string query = @"UPDATE Tables SET tableIsDeleted = 1 WHERE RestaurantId=@restaurantId";
+            SqlConnection conn = new SqlConnection(connectionstring);
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                try
+                {
+                    conn.Open();
+                    cmd.CommandText = query;
+                    cmd.Parameters.AddWithValue("@restaurantId", restaurantId);
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    throw new UserRepositoryADOException("restaurantRepositoryADO - DeleteAllTables", ex);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+
+            }
+
+        }
+
         public void DeleteRestaurant(int restaurantId)
         {
             string query = @"UPDATE Restaurants SET RestaurantIsDeleted = 1 WHERE RestaurantId=@RestaurantId";

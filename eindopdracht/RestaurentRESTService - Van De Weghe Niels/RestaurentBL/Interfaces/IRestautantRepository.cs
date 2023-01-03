@@ -10,6 +10,7 @@ namespace RestaurantBL.Interfaces
     public interface IRestautantRepository
     {
         Restaurant AddRestaurant(Restaurant restaurant);
+        void DeleteAllTables(int restaurantId);
         void DeleteRestaurant(int restaurantId);
         Restaurant GetRestaurant(int restaurantId);
         IReadOnlyList<Restaurant> GetRestaurantsWithFreeTables(DateTime date, int seats);

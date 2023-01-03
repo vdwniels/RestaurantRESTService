@@ -5,7 +5,6 @@ using RestaurantDL.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 string connectionString = @"Data Source=FRENK\SQLEXPRESS;Initial Catalog=RestaurantRESTdef;Integrated Security=True";
 // Add services to the container.
-
 builder.Services.AddControllers();
 
 builder.Services.AddSingleton<IReservationRepository>(r => new ReservationRepositoryADO(connectionString));

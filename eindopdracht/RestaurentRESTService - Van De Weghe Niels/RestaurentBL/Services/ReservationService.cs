@@ -186,11 +186,11 @@ namespace RestaurantBL.Services
             }
         }
 
-        public List<Reservation> GetReservations (int restaurantId, DateTime? startDate, DateTime? endDate)
+        public List<Reservation> GetReservationsOnPeriod (int restaurantId, DateTime? startDate, DateTime? endDate)
         {
             try
             {
-                if (!startDate.HasValue || !endDate.HasValue) throw new ReservationServiceException("ReservationService - GetReservations - no data");
+                if (!startDate.HasValue && !endDate.HasValue) throw new ReservationServiceException("ReservationService - GetReservationsOnPeriod - no data");
                 List<Reservation> reservations = repo.GetReservations(restaurantId, startDate, endDate);
                 return reservations;
             }
@@ -204,5 +204,27 @@ namespace RestaurantBL.Services
             }
 
         }
+
+        public List<Reservation> GetReservationsOnSpecificDay(int restaurantId, DateTime Date)
+        {
+            try
+            {
+                if (Date == null) throw new ReservationServiceException("ReservationService - GetReservationsOnSpecificDay - no data");
+                DateTime? startDate = Date;
+                DateTime? endDate = Date.AddDays(1);
+                List<Reservation> reservations = repo.GetReservations(restaurantId, startDate, endDate);
+                return reservations;
+            }
+            catch (ReservationServiceException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new ReservationServiceException("SearchReservations", ex);
+            }
+
+        }
+
     }
 }

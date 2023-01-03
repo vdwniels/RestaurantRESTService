@@ -51,6 +51,23 @@ namespace RestaurantRESTServiceUser.Mappers
                 throw new MapException("MapFromTableDomain", ex);
             }
         }
+        public static List<ReservationRESTOutputDTOAdmin> MapFromReservationDomain(List<Reservation> reservations)
+        {
+            try
+            {
+                List<ReservationRESTOutputDTOAdmin> reservationOutputList = new List<ReservationRESTOutputDTOAdmin>();
+                foreach (Reservation r in reservations)
+                {
+                    ReservationRESTOutputDTOAdmin reserv = new ReservationRESTOutputDTOAdmin(r.ReservationNumber, r.Tablenumber, r.RestaurantInfo.RestaurantId, r.Customer.CustomerNumber, r.Seats, r.DateAndHour);
+                    reservationOutputList.Add(reserv);
+                }
+                return reservationOutputList;
+            }
+            catch (Exception ex)
+            {
+                throw new MapException("MapFromReservationDomain", ex);
+            }
+        }
 
     }
 }

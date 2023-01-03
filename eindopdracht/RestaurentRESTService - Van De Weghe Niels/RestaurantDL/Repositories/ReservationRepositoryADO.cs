@@ -127,7 +127,72 @@ namespace RestaurantDL.Repositories
 
         public List<Reservation> GetReservations(int restaurantId, DateTime? startDate, DateTime? endDate)
         {
-            throw new NotImplementedException();
+            SqlConnection conn = new SqlConnection(connectionstring);
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                try
+                {
+                    conn.Open();
+
+                    #region queryconstruction
+                    string query = "SELECT * FROM Reservations reserv join Restaurants rest on reserv.RestaurantId=rest.RestaurantId join Users u  on reserv.CustomerId=u.CustomerId where ";
+                    if (startDate.HasValue)
+                    {
+                        query += "reserv.DateAndTime>@start AND ";
+                        cmd.Parameters.AddWithValue("@start", startDate);
+                    }
+
+                    if (endDate.HasValue)
+                    {
+                        query += "reserv.DateAndTime<@end AND ";
+                        cmd.Parameters.AddWithValue("@end", endDate);
+
+                    }
+
+                    query += "reserv.RestaurantId=@RestaurantId And reserv.ReservationIsDeleted=0;";
+                    cmd.Parameters.AddWithValue("@RestaurantId", restaurantId);
+                    #endregion
+
+                    cmd.CommandText = query;
+
+                    IDataReader dataReader = cmd.ExecuteReader();
+
+                    List<Reservation> reservations = new List<Reservation>();
+                    while (dataReader.Read())
+                    {
+                        Location lu = new Location((int)dataReader["UserPostalCode"], (string)dataReader["UserTown"]);
+
+                        if (dataReader["UserStreet"] != DBNull.Value) lu.SetStreet((string)dataReader["UserStreet"]);
+                        if (dataReader["UserNumber"] != DBNull.Value) lu.SetNumber((string)dataReader["UserNumber"]);
+
+                        User u = new User((int)dataReader["CustomerId"], (string)dataReader["UserName"], (string)dataReader["UserEmail"], (string)dataReader["UserPhoneNumber"], lu);
+
+                        Location lr = new Location((int)dataReader["RestaurantPostalCode"], (string)dataReader["RestaurantTown"]);
+
+                        if (dataReader["RestaurantStreet"] != DBNull.Value) lu.SetStreet((string)dataReader["RestaurantStreet"]);
+                        if (dataReader["RestaurantNumber"] != DBNull.Value) lu.SetNumber((string)dataReader["RestaurantNumber"]);
+
+                        Restaurant rest = new Restaurant((int)dataReader["RestaurantId"], (string)dataReader["RestaurantName"], lr, (string)dataReader["Cuisine"], (string)dataReader["RestaurantEmail"], (string)dataReader["RestaurantPhoneNumber"]);
+
+                        Reservation r = new Reservation((int)dataReader["ReservationNumber"], (int)dataReader["TableNumberResevation"], rest, u, (int)dataReader["ReservationSeats"], (DateTime)dataReader["DateAndTime"]);
+
+                        reservations.Add(r);
+                    }
+
+
+                    dataReader.Close();
+                    return reservations;
+                }
+                catch (Exception ex)
+                {
+                    throw new UserRepositoryADOException("GetReservations", ex);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+
         }
 
         public bool reservationExists(int reservationId)

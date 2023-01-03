@@ -143,5 +143,22 @@ namespace RestaurantBL.Services
                 throw new RestaurantServiceException("GetRestaurant", ex);
             }
         }
+
+        public void DeleteAllTables(int restaurantId)
+        {
+            try
+            {
+                if (!repo.RestaurantExists(restaurantId)) throw new RestaurantServiceException("RestaurantService - DeleteAllTables - restaurant doesn't exist");
+                repo.DeleteAllTables(restaurantId);
+            }
+            catch (TableServiceException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new TableServiceException("DeleteTable", ex);
+            }
+        }
     }
 }
