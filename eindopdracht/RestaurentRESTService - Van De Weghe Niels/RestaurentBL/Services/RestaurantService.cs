@@ -132,6 +132,7 @@ namespace RestaurantBL.Services
         {
             try
             {
+                if (!repo.RestaurantExists(restaurantId)) throw new RestaurantServiceException("RestaurantService - GetRestaurant - restaurant doesn't exist");
                 return repo.GetRestaurant(restaurantId);
             }
             catch (RestaurantServiceException)

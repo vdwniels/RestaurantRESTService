@@ -18,13 +18,14 @@ namespace RestautantRESTServiceAdmin.Controllers
         private RestaurantService restaurantService;
         private UserService userService;
         private TableService tableService;
-
-        public RestaurantRESTControllerAdmin(ReservationService reservationService, RestaurantService restaurantService, UserService userService, TableService tableService)
+        private readonly ILogger logger;
+        public RestaurantRESTControllerAdmin(ReservationService reservationService, RestaurantService restaurantService, UserService userService, TableService tableService, ILoggerFactory logger)
         {
             this.reservationService = reservationService;
             this.restaurantService = restaurantService;
             this.userService = userService;
             this.tableService = tableService;
+            this.logger = logger.AddFile("LoggingAdmin").CreateLogger<RestaurantRESTControllerAdmin>();
         }
 
         [HttpGet("/GetRestaurant/{restaurantId}")]
@@ -32,6 +33,7 @@ namespace RestautantRESTServiceAdmin.Controllers
         {
             try
             {
+                
                 Restaurant restaurant = restaurantService.GetRestaurant(restaurantId);
                 return Ok(MapFromDomainAdmin.MapFromRestaurantDomain(restaurant));
             }

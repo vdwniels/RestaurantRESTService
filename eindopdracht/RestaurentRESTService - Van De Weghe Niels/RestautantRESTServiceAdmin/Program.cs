@@ -1,6 +1,7 @@
 using RestaurantBL.Interfaces;
 using RestaurantBL.Services;
 using RestaurantDL.Repositories;
+using RestautantRESTServiceAdmin.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 string connectionString = @"Data Source=FRENK\SQLEXPRESS;Initial Catalog=RestaurantRESTdef;Integrated Security=True";
@@ -33,5 +34,7 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseMiddleware<LogMiddlewareAdmin>();
 
 app.Run();

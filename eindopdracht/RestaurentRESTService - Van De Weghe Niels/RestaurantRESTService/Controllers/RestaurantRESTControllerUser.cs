@@ -16,13 +16,14 @@ namespace RestaurantRESTServiceUser.Controllers
         private RestaurantService restaurantService;
         private UserService userService;
         private TableService tableService;
-
-        public RestaurantRESTControllerUser(ReservationService reservationService, RestaurantService restaurantService, UserService userService, TableService tableService)
+        private readonly ILogger logger;
+        public RestaurantRESTControllerUser(ReservationService reservationService, RestaurantService restaurantService, UserService userService, TableService tableService, ILoggerFactory logger)
         {
             this.reservationService = reservationService;
             this.restaurantService = restaurantService;
             this.userService = userService;
             this.tableService = tableService;
+            this.logger = logger.AddFile("LoggingUser").CreateLogger<RestaurantRESTControllerUser>();
         }
 
         [HttpGet("/GetCustomer/{customerId}")]
