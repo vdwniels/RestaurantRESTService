@@ -19,11 +19,12 @@
             finally
             {
 
-                _logger.LogInformation("Request {method} {url} => {statuscode} ",
+                _logger.LogInformation("Request {method} {url} => {statuscode}; optional input => {OptionalInput} ",
                     context.Request?.Method,
                     context.Request?.Path.Value,
-                    context.Response?.StatusCode);
-                
+                    context.Response?.StatusCode,
+                    context.Request?.Query);
+
             }
         }
 
