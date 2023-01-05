@@ -1,1 +1,2 @@
 2023-01-03T18:12:03.8065115+01:00  [INF] Request "GET" "/SearchreservationsOfCustomer/1" => 200  (3ee49f5d)
+2023-01-03T19:01:34.3800541+01:00  [INF] Request "GET" "/GetCustomer/1" => 200; optional input => []  (c2b4289c)

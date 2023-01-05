@@ -46,7 +46,7 @@ namespace RestaurantRESTServiceUser.Controllers
             try
             {
                 User user = userService.AddUser(MapToDomainUser.MapToUserDomain(restDTO));
-                return CreatedAtAction(nameof(GetUser), new { UserId = user.CustomerNumber }, MapFromDomainUser.MapFromUserDomain(hostURL, user, userService));
+                return CreatedAtAction(nameof(GetUser), new { customerId = user.CustomerNumber }, MapFromDomainUser.MapFromUserDomain(hostURL, user, userService));
             }
             catch(Exception ex)
             {
